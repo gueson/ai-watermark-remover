@@ -59,7 +59,7 @@ export default function Home() {
           不需要上传图片。所有 AI 处理都在你的浏览器本地完成，图片永远不会离开你的设备。
         </p>
         <div className="inline-block bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm text-blue-800">
-          已集成 AI 背景移除（@imgly/background-removal）。水印去除功能待实现。
+          当前版本：纯前端算法（适合白底图）。如需 AI 效果，请自行集成 ONNX 模型（参考 README）。
         </div>
       </section>
 

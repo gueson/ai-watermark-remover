@@ -1,10 +1,10 @@
 # AI Image Cleaner
 
-隐私优先的 AI 图片处理工具：去背景 + 去水印。完全在浏览器本地运行，绝不上传图片。
+隐私优先的图片处理工具：去背景 + 去水印。完全在浏览器本地运行，绝不上传图片。
 
 ## 特性
 
-- 100% 客户端处理（使用 @imgly/background-removal）
+- 100% 客户端处理
 - 隐私绝对安全：图片不出设备
 - 免费无限制
 - 响应式设计，移动端友好
@@ -15,7 +15,7 @@
 - Next.js 14 (App Router)
 - TypeScript
 - Tailwind CSS
-- @imgly/background-removal（自动下载模型）
+- 纯前端图像处理（Canvas API）
 
 ## 快速开始
 
@@ -27,11 +27,20 @@ npm run dev
 
 访问 http://localhost:3000
 
-## 模型管理
+## 当前功能说明
 
-背景移除模型由 `@imgly/background-removal` 自动下载并缓存（存储在浏览器 IndexedDB）。首次使用需联网下载模型（约 50MB），之后离线可用。
+**背景移除**：使用简化算法，可清除纯色浅背景（如白底图）。复杂背景效果有限。
 
-如需手动清除模型缓存：浏览器设置 → 清除网站数据。
+**水印去除**：待开发。
+
+## 升级为 AI 效果（可选）
+
+如需真实 AI 效果，可自行集成 ONNX 模型：
+1. 下载 RMBG-1.4 或 LaMa ONNX 模型
+2. 放入 `public/models/` 目录
+3. 修改 `lib/` 相关代码接入推理
+
+`@imgly/background-removal` 因构建兼容性问题暂不启用。
 
 ## 部署
 
@@ -46,9 +55,9 @@ vercel --prod
 
 - `app/` - Next.js App Router 页面
 - `components/` - React 组件
-- `lib/` - 核心逻辑
+- `lib/` - 核心逻辑（预留 ONNX 接口）
 - `public/` - 静态资源
 
 ## 架构
 
-浏览器端推理，无后端服务。
+纯静态托管，无后端服务。
