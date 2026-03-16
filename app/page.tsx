@@ -12,8 +12,11 @@ export default function Home() {
   const [apiKey, setApiKey] = useState<string>('');
 
   useEffect(() => {
+    // 优先使用环境变量提供的 Key，否则从 localStorage 读取
+    const envKey = process.env.REMBG_API_KEY || '';
     const stored = localStorage.getItem('rembg_api_key') || '';
-    setApiKey(stored);
+    const initialKey = envKey || stored;
+    setApiKey(initialKey);
   }, []);
 
   const handleApiKeyChange = (key: string) => {
