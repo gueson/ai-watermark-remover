@@ -1,7 +1,7 @@
-import { createWorker } from 'onnxruntime-web';
+import { InferenceSession } from 'onnxruntime-web';
 
 export async function loadModel(modelPath: string) {
-  const session = await createWorker(modelPath, {
+  const session = await InferenceSession.create(modelPath, {
     executionProviders: ['wasm'],
     graphOptimizationLevel: 'all'
   });
@@ -9,7 +9,7 @@ export async function loadModel(modelPath: string) {
 }
 
 export async function runInference(
-  session: any,
+  session: InferenceSession,
   inputTensor: Float32Array,
   inputShape: number[]
 ) {
