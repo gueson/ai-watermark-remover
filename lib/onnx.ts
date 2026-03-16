@@ -13,7 +13,7 @@ export async function runInference(
   inputTensor: Float32Array,
   inputShape: number[]
 ) {
-  const inputTensorObj = new Float32Tensor({ shape: inputShape, data: inputTensor });
+  const inputTensorObj = new Tensor('float32', inputTensor, inputShape);
   const results = await session.run({ input: inputTensorObj });
   return results;
 }
