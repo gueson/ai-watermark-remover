@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { processImageWithAI } from '@/lib/imageProcessor';
+import { removeBackgroundFromImage } from '@/lib/backgroundRemoval';
 
 interface ProcessingCanvasProps {
   original: string;
@@ -20,25 +20,27 @@ export default function ProcessingCanvas({
   setProcessing,
   onReset
 }: ProcessingCanvasProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
   const processImage = async () => {
-    const img = new Image();
-    img.onload = async () => {
-      const canvas = canvasRef.current!;
-      const ctx = canvas.getContext('2d')!;
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
+    // 将 dataURL 转为 File
+    const response = await fetch(original);
+    const blob = await response.blob();
+    const file = new File([blob], 'image.png', { type: 'image/png' });
 
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const result = await processImageWithAI(imageData, { mode });
-      ctx.putImageData(result, 0, 0);
-
-      onProcessed(canvas.toDataURL('image/png'));
+    try {
+      if (mode === 'background') {
+        const resultBlob = await removeBackgroundFromImage(file);
+        const url = URL.createObjectURL(resultBlob);
+        onProcessed(url);
+      } else {
+        // 水印功能暂未实现，返回原图
+        onProcessed(original);
+      }
+    } catch (err) {
+      console.error('Processing failed:', err);
+      onProcessed(original);
+    } finally {
       setProcessing(false);
-    };
-    img.src = original;
+    }
   };
 
   useEffect(() => {

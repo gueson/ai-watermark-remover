@@ -58,8 +58,8 @@ export default function Home() {
         <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
           不需要上传图片。所有 AI 处理都在你的浏览器本地完成，图片永远不会离开你的设备。
         </p>
-        <div className="inline-block bg-yellow-50 border border-yellow-200 rounded-lg px-4 py-3 text-sm text-yellow-800">
-          当前使用演示算法（效果有限）。下载并配置 ONNX 模型可启用完整 AI 效果，参考 <code className="font-mono bg-yellow-100 px-1 rounded">MODELS.md</code>。
+        <div className="inline-block bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm text-blue-800">
+          已集成 AI 背景移除（@imgly/background-removal）。水印去除功能待实现。
         </div>
       </section>
 

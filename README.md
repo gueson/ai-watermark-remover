@@ -4,7 +4,7 @@
 
 ## 特性
 
-- 100% 客户端处理（使用 ONNX Runtime Web）
+- 100% 客户端处理（使用 @imgly/background-removal）
 - 隐私绝对安全：图片不出设备
 - 免费无限制
 - 响应式设计，移动端友好
@@ -15,8 +15,7 @@
 - Next.js 14 (App Router)
 - TypeScript
 - Tailwind CSS
-- ONNX Runtime Web
-- Fabric.js
+- @imgly/background-removal（自动下载模型）
 
 ## 快速开始
 
@@ -28,13 +27,11 @@ npm run dev
 
 访问 http://localhost:3000
 
-## 模型集成（可选）
+## 模型管理
 
-当前版本使用简化算法演示。如需真实 AI 效果：
+背景移除模型由 `@imgly/background-removal` 自动下载并缓存（存储在浏览器 IndexedDB）。首次使用需联网下载模型（约 50MB），之后离线可用。
 
-1. 下载 ONNX 模型（见 MODELS.md）
-2. 放入 `public/models/` 目录
-3. 修改 `lib/onnx.ts` 接入推理
+如需手动清除模型缓存：浏览器设置 → 清除网站数据。
 
 ## 部署
 
@@ -45,14 +42,11 @@ npm run build
 vercel --prod
 ```
 
-或直接推送仓库到 Vercel，自动构建。
-
 ## 项目结构
 
 - `app/` - Next.js App Router 页面
 - `components/` - React 组件
-- `lib/` - 核心逻辑（图像处理、ONNX 接口）
-- `public/models/` - 模型文件（需自行添加）
+- `lib/` - 核心逻辑
 - `public/` - 静态资源
 
 ## 架构
