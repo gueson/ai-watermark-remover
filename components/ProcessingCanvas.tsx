@@ -24,6 +24,8 @@ export default function ProcessingCanvas({
   onReset,
   apiKey
 }: ProcessingCanvasProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const processImage = async () => {
     const response = await fetch(original);
     const blob = await response.blob();
