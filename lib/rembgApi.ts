@@ -20,7 +20,7 @@ export async function removeBackgroundAPI(file: File, options: RemoveBgOptions =
   formData.append('type', type);
   formData.append('channels', channels);
 
-  const response = await fetch('https://api.rembg.com/v2/remove', {
+  const response = await fetch('https://api.remove.bg/v2/remove', {
     method: 'POST',
     headers: {
       'X-Api-Key': apiKey
