@@ -9,20 +9,6 @@ export default function Home() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
   const [mode, setMode] = useState<'background' | 'watermark'>('background');
-  const [apiKey, setApiKey] = useState<string>('');
-
-  useEffect(() => {
-    // 优先使用环境变量提供的 Key，否则从 localStorage 读取
-    const envKey = process.env.REMBG_API_KEY || '';
-    const stored = localStorage.getItem('rembg_api_key') || '';
-    const initialKey = envKey || stored;
-    setApiKey(initialKey);
-  }, []);
-
-  const handleApiKeyChange = (key: string) => {
-    setApiKey(key);
-    localStorage.setItem('rembg_api_key', key);
-  };
 
   const handleFile = useCallback((file: File) => {
     const reader = new FileReader();
@@ -68,20 +54,8 @@ export default function Home() {
           高质量去背景，支持复杂图片
         </h2>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-          集成 remove.bg API，精准识别前景与背景。
+          基于 AI 的纯前端背景去除，无需 API Key，保护隐私。
         </p>
-        <div className="inline-block bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-800 max-w-2xl">
-          <strong>配置 API Key：</strong> 获取免费额度后粘贴下方（保存在本地）。
-          <div className="mt-2">
-            <input
-              type="text"
-              placeholder="输入 remove.bg API Key"
-              value={apiKey}
-              onChange={(e) => handleApiKeyChange(e.target.value)}
-              className="w-full px-3 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
-            />
-          </div>
-        </div>
       </section>
 
       <section className="container mx-auto px-4 pb-16">
@@ -99,7 +73,6 @@ export default function Home() {
               setOriginalImage(null);
               setProcessedImage(null);
             }}
-            apiKey={apiKey}
           />
         )}
       </section>
@@ -123,17 +96,17 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
-              <h4 className="font-bold mb-2">隐私可选</h4>
-              <p className="text-gray-600 text-sm">无 API Key 时使用前端算法</p>
+              <h4 className="font-bold mb-2">隐私保护</h4>
+              <p className="text-gray-600 text-sm">纯前端处理，图片不上传服务器</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h4 className="font-bold mb-2">灵活付费</h4>
-              <p className="text-gray-600 text-sm">remove.bg 提供免费额度</p>
+              <h4 className="font-bold mb-2">零成本</h4>
+              <p className="text-gray-600 text-sm">无需购买 API，本地运行 AI 模型</p>
             </div>
           </div>
         </div>
@@ -141,7 +114,7 @@ export default function Home() {
 
       <footer className="border-t border-gray-100 py-8">
         <div className="container mx-auto px-4 text-center text-gray-500 text-sm">
-          <p>© 2024 AI Image Cleaner. 使用 remove.bg API 提升效果。</p>
+          <p>© 2024 AI Image Cleaner. 基于 @imgly/background-removal</p>
         </div>
       </footer>
     </main>

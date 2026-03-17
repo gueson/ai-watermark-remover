@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { removeBackgroundAPI } from '@/lib/rembgApi';
+import { removeBackgroundFromImage } from '@/lib/backgroundRemoval';
 
 interface ProcessingCanvasProps {
   original: string;
@@ -24,23 +24,11 @@ export default function ProcessingCanvas({
   onReset,
   apiKey
 }: ProcessingCanvasProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const processImage = async () => {
-    const response = await fetch(original);
-    const blob = await response.blob();
-    const file = new File([blob], 'image.png', { type: 'image/png' });
-
     try {
       if (mode === 'background') {
-        let resultBlob: Blob;
-        if (apiKey) {
-          // 使用 remove.bg API
-          resultBlob = await removeBackgroundAPI(file, { apiKey });
-        } else {
-          // 回退到本地简化算法
-          resultBlob = await processLocal(file);
-        }
+        const resultBlob = await removeBackgroundFromImage(file);
         const url = URL.createObjectURL(resultBlob);
         onProcessed(url);
       } else {
@@ -53,31 +41,6 @@ export default function ProcessingCanvas({
     } finally {
       setProcessing(false);
     }
-  };
-
-  const processLocal = async (file: File): Promise<Blob> => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d')!;
-        ctx.drawImage(img, 0, 0);
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-
-        for (let i = 0; i < data.length; i += 4) {
-          const r = data[i], g = data[i + 1], b = data[i + 2];
-          if (r > 240 && g > 240 && b > 240) {
-            data[i + 3] = 0;
-          }
-        }
-        ctx.putImageData(imageData, 0, 0);
-        canvas.toBlob((blob) => resolve(blob!), 'image/png');
-      };
-      img.src = URL.createObjectURL(file);
-    });
   };
 
   useEffect(() => {
@@ -145,9 +108,6 @@ export default function ProcessingCanvas({
           重新选择
         </button>
       </div>
-
-      {/* 隐藏的 Canvas 用于图像处理 */}
-      <canvas ref={canvasRef} className="hidden" />
     </div>
   );
 }

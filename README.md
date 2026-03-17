@@ -1,12 +1,12 @@
 # AI Image Cleaner
 
-基于 remove.bg API 的高质量背景移除工具，支持纯前端降级方案。
+基于 @imgly/background-removal 的高质量背景移除工具，完全在浏览器中运行。
 
 ## 特性
 
-- 高质量 AI 背景移除（remove.bg API）
-- 可选本地简化算法（无需 API Key）
-- 隐私灵活：无 Key 时图片不上传
+- 纯前端 AI 背景移除，无需 API Key
+- 隐私保护：图片不上传服务器，完全本地处理
+- 高质量模型，支持复杂背景
 - 响应式 UI，Tailwind 风格
 - Vercel 一键部署
 
@@ -20,13 +20,9 @@ npm run dev
 
 访问 http://localhost:3000
 
-## 配置 API Key（可选）
+## 工作原理
 
-1. 注册获取 API Key：https://www.remove.bg/api
-2. 在页面输入框粘贴并保存（存储在浏览器 localStorage）
-
-有 API Key 时：图片上传至 remove.bg 处理，效果优秀
-无 API Key 时：使用本地简化算法（仅适合白底图）
+使用 [@imgly/background-removal](https://www.npmjs.com/package/@imgly/background-removal) 库，在浏览器中加载 AI 模型进行推理。首次处理会下载模型文件（约 100MB），之后可离线使用。
 
 ## 部署到 Vercel
 
@@ -35,23 +31,17 @@ npm run build
 vercel --prod
 ```
 
-无需环境变量，纯静态部署。
+纯静态部署，无需环境变量。
 
 ## 技术栈
 
 - Next.js 14 (App Router)
 - TypeScript
 - Tailwind CSS
-- remove.bg REST API
-
-## 成本
-
-- remove.bg 免费额度：每月 50 张
-- 超出后按需付费（约 $0.09/张）
-- 本地模式完全免费
+- @imgly/background-removal
 
 ## 项目结构
 
 - `app/` - 页面与布局
 - `components/` - 上传组件与预览画布
-- `lib/` - API 封装
+- `lib/` - 背景移除封装
